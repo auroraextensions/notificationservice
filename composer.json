@@ -1,0 +1,29 @@
+{
+  "name": "auroraextensions/messagerelay",
+  "description": "Publish backend notifications via XML.",
+  "type": "magento2-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nickolas Burr",
+      "email": "nickolasburr@auroraextensions.com"
+    }
+  ],
+  "support": {
+    "email": "support@auroraextensions.com"
+  },
+  "require": {
+    "php": ">=7.1",
+    "magento/framework": "102.*.*",
+    "magento/module-adminnotification": "100.*.*",
+    "magento/module-backend": "101.*.*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "AuroraExtensions\\MessageRelay\\": ""
+    }
+  }
+}
