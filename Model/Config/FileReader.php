@@ -29,6 +29,9 @@ use Magento\Framework\{
 
 class FileReader extends Filesystem
 {
+    /** @constant string XML_FILE */
+    public const XML_FILE = 'notifications.xml';
+
     /** @property array $_idAttributes */
     protected $_idAttributes = [
         '/config/release' => 'version',
@@ -51,7 +54,7 @@ class FileReader extends Filesystem
         ConverterInterface $converter,
         SchemaLocatorInterface $schemaLocator,
         ValidationStateInterface $validationState,
-        $fileName = 'notifications.xml',
+        $fileName = self::XML_FILE,
         $idAttributes = [],
         $domDocumentClass = Dom::class,
         $defaultScope = 'global'
