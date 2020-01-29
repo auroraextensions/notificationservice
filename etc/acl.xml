@@ -9,9 +9,9 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/messagerelay/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
  *
- * @package       AuroraExtensions_MessageRelay
+ * @package       AuroraExtensions_NotificationOutbox
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
@@ -24,7 +24,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="AuroraExtensions_MessageRelay::configuration" title="Message Relay" translate="title"/>
+                            <resource id="AuroraExtensions_NotificationOutbox::configuration" title="Notification Outbox" translate="title"/>
                         </resource>
                     </resource>
                 </resource>
