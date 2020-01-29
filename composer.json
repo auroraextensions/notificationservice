@@ -1,5 +1,5 @@
 {
-  "name": "auroraextensions/messagerelay",
+  "name": "auroraextensions/notificationoutbox",
   "description": "Publish backend notifications via XML.",
   "type": "magento2-module",
   "license": "MIT",
@@ -23,7 +23,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "AuroraExtensions\\MessageRelay\\": ""
+      "AuroraExtensions\\NotificationOutbox\\": ""
     }
   }
 }

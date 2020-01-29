@@ -1,3 +1,3 @@
-# Message Relay
+# Notification Outbox
 
 Publish backend notifications via XML.
