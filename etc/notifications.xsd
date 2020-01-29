@@ -21,22 +21,22 @@
 
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="outboxType" name="notifications" maxOccurs="unbounded" minOccurs="1"/>
-        </xs:sequence>
-    </xs:complexType>
-
-    <xs:complexType name="outboxType">
-        <xs:sequence maxOccurs="unbounded" minOccurs="0">
             <xs:element type="releaseType" name="release" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="releaseType">
-        <xs:sequence maxOccurs="unbounded" minOccurs="0">
-            <xs:element type="notificationType" name="notification" maxOccurs="unbounded" minOccurs="0"/>
+        <xs:sequence>
+            <xs:element type="notificationsType" name="notifications" maxOccurs="1" minOccurs="1"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="version" use="required"/>
         <xs:attribute type="xs:string" name="tag" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="notificationsType">
+        <xs:sequence>
+            <xs:element type="notificationType" name="notification" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="notificationType">
