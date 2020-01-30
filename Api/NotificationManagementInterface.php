@@ -1,6 +1,6 @@
 <?php
 /**
- * OutboxManagementInterface.php
+ * NotificationManagementInterface.php
  *
  * NOTICE OF LICENSE
  *
@@ -18,10 +18,20 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationOutbox\Api;
 
-interface OutboxManagementInterface
+interface NotificationManagementInterface
 {
+    /**
+     * @return bool
+     */
+    public function hasUnsent(): bool;
+
+    /**
+     * @return int
+     */
+    public function markAsSent(Data\NotificationInterface $entry): int;
+
     /**
      * @return void
      */
-    public function checkForUpdates(): void;
+    public function processUnsent(): void;
 }
