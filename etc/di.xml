@@ -18,8 +18,12 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="AuroraExtensions\NotificationOutbox\Api\OutboxManagementInterface"
-                type="AuroraExtensions\NotificationOutbox\Model\Outbox\OutboxManagement"/>
+    <preference for="AuroraExtensions\NotificationOutbox\Api\NotificationManagementInterface"
+                type="AuroraExtensions\NotificationOutbox\Model\Management\NotificationManagement"/>
+    <preference for="AuroraExtensions\NotificationOutbox\Api\NotificationRepositoryInterface"
+                type="AuroraExtensions\NotificationOutbox\Model\Repository\NotificationRepository"/>
+    <preference for="AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface"
+                type="AuroraExtensions\NotificationOutbox\Model\Data\Notification"/>
     <type name="AuroraExtensions\NotificationOutbox\Model\Config\FileReader">
         <arguments>
             <argument name="converter" xsi:type="object">AuroraExtensions\NotificationOutbox\Model\Config\XmlConverter</argument>
