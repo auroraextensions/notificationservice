@@ -21,8 +21,15 @@
 
     <xs:complexType name="configType">
         <xs:sequence>
+            <xs:element type="releasesType" name="releases" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="releasesType">
+        <xs:sequence>
             <xs:element type="releaseType" name="release" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute type="xs:string" name="group" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="releaseType">
