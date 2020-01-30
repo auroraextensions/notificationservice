@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationOutbox\Model\Config;
 
-use DOMDocument;
+use DOMDocument, DOMElement, DOMNode;
 use Magento\Framework\{
     Config\ConverterInterface,
     Stdlib\BooleanUtils
@@ -54,15 +54,26 @@ class XmlConverter implements ConverterInterface
         /** @var DOMNode $releaseNode */
         foreach ($releaseNodes as $releaseNode) {
             if ($releaseNode->nodeType === XML_ELEMENT_NODE) {
-                /** @var string $groupName */
-                $groupName = $releaseNode->attributes
+                /** @var string $groupType */
+                $groupType = $releaseNode->attributes
+                    ->getNamedItem('group')
+                    ->nodeValue;
+
+                /** @var string $version */
+                $version = $releaseNode->attributes
                     ->getNamedItem('version')
                     ->nodeValue;
 
-                /** @var DOMNodeList|null $notifsNode */
-                $notifsNode = $releaseNode->firstChild;
+                /** @var DOMElement[] $childNodes */
+                $childNodes = $this->getChildNodesByTagName(
+                    $releaseNode,
+                    'notifications'
+                );
 
-                if ($notifsNode !== null) {
+                if (!empty($childNodes)) {
+                    /** @var DOMElement $notifsNode */
+                    $notifsNode = $childNodes[0];
+
                     /** @var DOMNode $notifNode */
                     foreach ($notifsNode->childNodes as $notifNode) {
                         if ($notifNode->nodeType === XML_ELEMENT_NODE) {
@@ -71,7 +82,15 @@ class XmlConverter implements ConverterInterface
                                 ->getNamedItem('index')
                                 ->nodeValue;
 
-                            $result[$groupName][$indexValue] = [];
+                            /** @var string|null $severity */
+                            $severity = $notifNode->attributes
+                                ->getNamedItem('severity')
+                                ->nodeValue;
+
+                            $result[$groupType][$version][$indexValue] = [
+                                'index' => $indexValue,
+                                'severity' => $severity,
+                            ];
 
                             /** @var DOMNode $dataNode */
                             foreach ($notifNode->childNodes as $dataNode) {
@@ -94,7 +113,7 @@ class XmlConverter implements ConverterInterface
                                     /** @var Phrase|string $textValue */
                                     $textValue = $isTranslatable ? __($nodeValue) : $nodeValue;
 
-                                    $result[$groupName][$indexValue] += [
+                                    $result[$groupType][$version][$indexValue] += [
                                         $nodeName => $textValue,
                                     ];
                                 }
@@ -102,6 +121,29 @@ class XmlConverter implements ConverterInterface
                         }
                     }
                 }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param DOMElement $element
+     * @param string $tagName
+     * @return array
+     */
+    private function getChildNodesByTagName(
+        DOMElement $element,
+        string $tagName
+    ): array
+    {
+        /** @var array $result */
+        $result = [];
+
+        /** @var DOMNode $node */
+        foreach ($element->childNodes as $node) {
+            if ($node instanceof DOMElement && $node->tagName === $tagName) {
+                $result[] = $node;
             }
         }
 
