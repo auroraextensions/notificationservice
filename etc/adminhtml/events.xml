@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * events.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ *
+ * @package       AuroraExtensions_NotificationOutbox
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="notificationoutbox_adminhtml_session_notifier_pool_observer"
+                  instance="AuroraExtensions\NotificationOutbox\Observer\Backend\SessionNotifierPoolObserver"/>
+    </event>
+</config>
