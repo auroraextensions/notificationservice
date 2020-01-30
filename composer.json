@@ -15,7 +15,7 @@
   "require": {
     "php": ">=7.1",
     "magento/framework": "102.*.*",
-    "magento/module-adminnotification": "100.*.*",
+    "magento/module-admin-notification": "100.*.*",
     "magento/module-backend": "101.*.*"
   },
   "autoload": {
