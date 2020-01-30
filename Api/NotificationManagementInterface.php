@@ -36,9 +36,9 @@ interface NotificationManagementInterface
     public function hasUnsent(): bool;
 
     /**
-     * @return int
+     * @return void
      */
-    public function markAsSent(Data\NotificationInterface $entry): int;
+    public function markAsSent(Data\NotificationInterface $entry): void;
 
     /**
      * @return void
