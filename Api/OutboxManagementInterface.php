@@ -23,5 +23,5 @@ interface OutboxManagementInterface
     /**
      * @return void
      */
-    public function checkForUpdates();
+    public function checkForUpdates(): void;
 }
