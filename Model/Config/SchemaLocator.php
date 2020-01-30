@@ -20,7 +20,8 @@ namespace AuroraExtensions\NotificationOutbox\Model\Config;
 
 use Magento\Framework\{
     Config\SchemaLocatorInterface,
-    Module\Dir as ModuleDir
+    Module\Dir as ModuleDir,
+    Module\Dir\Reader as ModuleReader
 };
 
 class SchemaLocator implements SchemaLocatorInterface
@@ -38,7 +39,7 @@ class SchemaLocator implements SchemaLocatorInterface
     protected $schema;
 
     /**
-     * @param ModuleReader $moduleReader
+     * @param \Magento\Framework\Module\Dir\Reader $moduleReader
      * @return void
      */
     public function __construct(
