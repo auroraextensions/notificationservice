@@ -21,8 +21,15 @@
 
     <xs:complexType name="configType">
         <xs:sequence>
+            <xs:element type="releasesType" name="releases" maxOccurs="1" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="releasesType">
+        <xs:sequence>
             <xs:element type="releaseType" name="release" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute type="xs:string" name="group" use="required"/>
     </xs:complexType>
 
     <xs:complexType name="releaseType">
@@ -45,7 +52,8 @@
             <xs:element name="description" type="translatableType" maxOccurs="1" minOccurs="1"/>
         </xs:all>
         <xs:attribute type="xs:int" name="index" use="required"/>
-        <xs:attribute type="xs:string" name="severity" use="optional"/>
+        <xs:attribute type="xs:string" name="severity" use="required"/>
+        <xs:attribute type="xs:boolean" name="ignore" use="optional" fixed="true"/>
     </xs:complexType>
 
     <xs:complexType name="translatableType">

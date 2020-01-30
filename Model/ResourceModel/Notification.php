@@ -1,6 +1,6 @@
 <?php
 /**
- * OutboxManagementInterface.php
+ * Notification.php
  *
  * NOTICE OF LICENSE
  *
@@ -16,12 +16,20 @@
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Api;
+namespace AuroraExtensions\NotificationOutbox\Model\ResourceModel;
 
-interface OutboxManagementInterface
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+
+class Notification extends AbstractDb
 {
     /**
      * @return void
      */
-    public function checkForUpdates(): void;
+    protected function _construct()
+    {
+        $this->_init(
+            'notificationoutbox_entry',
+            'entry_id'
+        );
+    }
 }

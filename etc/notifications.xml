@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * notifications.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ *
+ * @package       AuroraExtensions_NotificationOutbox
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:AuroraExtensions_NotificationOutbox/etc/notifications.xsd">
+    <releases group="notificationoutbox">
+        <release version="1.0.0">
+            <notifications>
+                <notification index="0" severity="notice">
+                    <title translate="true">Initial release of Notification Outbox by Aurora Extensions.</title>
+                    <description translate="true">This is the initial release of Notification Outbox by Aurora Extensions.</description>
+                </notification>
+            </notifications>
+        </release>
+    </releases>
+</config>
