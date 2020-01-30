@@ -18,8 +18,18 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationOutbox\Api;
 
+use Magento\Framework\Notification\MessageInterface;
+
 interface NotificationManagementInterface
 {
+    /** @constant array SEVERITY */
+    public const SEVERITY = [
+        'critical' => MessageInterface::SEVERITY_CRITICAL,
+        'major' => MessageInterface::SEVERITY_MAJOR,
+        'minor' => MessageInterface::SEVERITY_MINOR,
+        'notice' => MessageInterface::SEVERITY_NOTICE,
+    ];
+
     /**
      * @return bool
      */
