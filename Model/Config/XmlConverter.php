@@ -100,9 +100,19 @@ class XmlConverter implements ConverterInterface
                                     ->getNamedItem('severity')
                                     ->nodeValue;
 
+                                /** @var string|null $ignoreValue */
+                                $ignoreValue = $notifNode->attributes
+                                    ->getNamedItem('ignore')
+                                    ->nodeValue;
+
+                                /** @var bool $isIgnored */
+                                $isIgnored = $this->booleanUtils
+                                    ->toBoolean($ignoreValue);
+
                                 $result[$groupType][$version][$indexValue] = [
                                     'index' => $indexValue,
                                     'severity' => $severity,
+                                    'ignore' => $isIgnored,
                                 ];
 
                                 /** @var DOMNode $dataNode */
