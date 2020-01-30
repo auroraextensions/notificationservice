@@ -18,7 +18,7 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationOutbox\Model\Config;
 
-use DOMDocument, DOMElement, DOMNode;
+use DOMDocument, DOMElement, DOMNodeList;
 use Magento\Framework\{
     Config\ConverterInterface,
     Stdlib\BooleanUtils
@@ -48,74 +48,88 @@ class XmlConverter implements ConverterInterface
         /** @var array $result */
         $result = [];
 
-        /** @var DOMNodeList $releaseNodes */
-        $releaseNodes = $source->documentElement->childNodes;
+        /** @var DOMElement[] $releasesNodes */
+        $releasesNodes = $this->getChildNodesByTagName(
+            $source->documentElement,
+            'releases'
+        );
 
-        /** @var DOMNode $releaseNode */
-        foreach ($releaseNodes as $releaseNode) {
-            if ($releaseNode->nodeType === XML_ELEMENT_NODE) {
-                /** @var string $groupType */
-                $groupType = $releaseNode->attributes
-                    ->getNamedItem('group')
-                    ->nodeValue;
+        if (!empty($releasesNodes)) {
+            /** @var DOMElement $releasesNode */
+            $releasesNode = $releasesNodes[0];
 
-                /** @var string $version */
-                $version = $releaseNode->attributes
-                    ->getNamedItem('version')
-                    ->nodeValue;
+            /** @var string $groupType */
+            $groupType = $releasesNode->attributes
+                ->getNamedItem('group')
+                ->nodeValue;
 
-                /** @var DOMElement[] $childNodes */
-                $childNodes = $this->getChildNodesByTagName(
-                    $releaseNode,
-                    'notifications'
-                );
+            /** @var DOMElement[] $releaseNodes */
+            $releaseNodes = $this->getChildNodesByTagName(
+                $releasesNode,
+                'release'
+            );
 
-                if (!empty($childNodes)) {
-                    /** @var DOMElement $notifsNode */
-                    $notifsNode = $childNodes[0];
+            /** @var DOMNode $releaseNode */
+            foreach ($releaseNodes as $releaseNode) {
+                if ($releaseNode->nodeType === XML_ELEMENT_NODE) {
+                    /** @var string $version */
+                    $version = $releaseNode->attributes
+                        ->getNamedItem('version')
+                        ->nodeValue;
 
-                    /** @var DOMNode $notifNode */
-                    foreach ($notifsNode->childNodes as $notifNode) {
-                        if ($notifNode->nodeType === XML_ELEMENT_NODE) {
-                            /** @var int|string $indexValue */
-                            $indexValue = $notifNode->attributes
-                                ->getNamedItem('index')
-                                ->nodeValue;
+                    /** @var DOMElement[] $notifsNodes */
+                    $notifsNodes = $this->getChildNodesByTagName(
+                        $releaseNode,
+                        'notifications'
+                    );
 
-                            /** @var string|null $severity */
-                            $severity = $notifNode->attributes
-                                ->getNamedItem('severity')
-                                ->nodeValue;
+                    if (!empty($notifsNodes)) {
+                        /** @var DOMElement $notifsNode */
+                        $notifsNode = $notifsNodes[0];
 
-                            $result[$groupType][$version][$indexValue] = [
-                                'index' => $indexValue,
-                                'severity' => $severity,
-                            ];
+                        /** @var DOMNode $notifNode */
+                        foreach ($notifsNode->childNodes as $notifNode) {
+                            if ($notifNode->nodeType === XML_ELEMENT_NODE) {
+                                /** @var int|string $indexValue */
+                                $indexValue = $notifNode->attributes
+                                    ->getNamedItem('index')
+                                    ->nodeValue;
 
-                            /** @var DOMNode $dataNode */
-                            foreach ($notifNode->childNodes as $dataNode) {
-                                if ($dataNode->nodeType === XML_ELEMENT_NODE) {
-                                    /** @var string $nodeName */
-                                    $nodeName = $dataNode->nodeName;
+                                /** @var string|null $severity */
+                                $severity = $notifNode->attributes
+                                    ->getNamedItem('severity')
+                                    ->nodeValue;
 
-                                    /** @var string $nodeValue */
-                                    $nodeValue = $dataNode->nodeValue;
+                                $result[$groupType][$version][$indexValue] = [
+                                    'index' => $indexValue,
+                                    'severity' => $severity,
+                                ];
 
-                                    /** @var string $translateValue */
-                                    $translateValue = $dataNode->attributes
-                                        ->getNamedItem('translate')
-                                        ->nodeValue;
+                                /** @var DOMNode $dataNode */
+                                foreach ($notifNode->childNodes as $dataNode) {
+                                    if ($dataNode->nodeType === XML_ELEMENT_NODE) {
+                                        /** @var string $tagName */
+                                        $tagName = $dataNode->tagName;
 
-                                    /** @var bool $isTranslatable */
-                                    $isTranslatable = $this->booleanUtils
-                                        ->toBoolean($translateValue);
+                                        /** @var string $nodeValue */
+                                        $nodeValue = $dataNode->nodeValue;
 
-                                    /** @var Phrase|string $textValue */
-                                    $textValue = $isTranslatable ? __($nodeValue) : $nodeValue;
+                                        /** @var string $translateValue */
+                                        $translateValue = $dataNode->attributes
+                                            ->getNamedItem('translate')
+                                            ->nodeValue;
 
-                                    $result[$groupType][$version][$indexValue] += [
-                                        $nodeName => $textValue,
-                                    ];
+                                        /** @var bool $isTranslatable */
+                                        $isTranslatable = $this->booleanUtils
+                                            ->toBoolean($translateValue);
+
+                                        /** @var string $textValue */
+                                        $textValue = $isTranslatable ? __($nodeValue)->__toString() : $nodeValue;
+
+                                        $result[$groupType][$version][$indexValue] += [
+                                            $tagName => $textValue,
+                                        ];
+                                    }
                                 }
                             }
                         }
