@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * db_schema.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ *
+ * @package       AuroraExtensions_NotificationOutbox
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="notificationoutbox_entry" resource="default" engine="innodb" comment="Notification Outbox Entries">
+        <column xsi:type="int" name="entry_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entry ID"/>
+        <column xsi:type="varchar" name="group" nullable="false" length="128" comment="Group"/>
+        <column xsi:type="varchar" name="version" nullable="false" length="128" comment="Version"/>
+        <column xsi:type="int" name="index" padding="10" unsigned="true" nullable="false" default="0"
+                comment="Index"/>
+        <column xsi:type="varchar" name="xpath" nullable="false" length="256" comment="XPath"/>
+        <column xsi:type="smallint" name="is_sent" padding="5" unsigned="true" nullable="false" default="0"
+                comment="Is Sent"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entry_id"/>
+        </constraint>
+        <index referenceId="NOTIFICATIONOUTBOX_ENTRY_GROUP" indexType="btree">
+            <column name="group"/>
+        </index>
+    </table>
+</schema>
