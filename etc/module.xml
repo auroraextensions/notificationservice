@@ -9,16 +9,16 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="AuroraExtensions_NotificationOutbox" setup_version="1.0.0">
+    <module name="AuroraExtensions_NotificationService" setup_version="1.0.0">
         <sequence>
             <module name="Magento_AdminNotification"/>
             <module name="Magento_Backend"/>

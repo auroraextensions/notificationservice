@@ -8,16 +8,16 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2019 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  * @link          https://devdocs.magento.com/guides/v2.3/extension-dev-guide/factories.html
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Exception;
+namespace AuroraExtensions\NotificationService\Exception;
 
 use Exception;
 use Magento\Framework\{

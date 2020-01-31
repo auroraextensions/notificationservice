@@ -8,15 +8,15 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Api\Data;
+namespace AuroraExtensions\NotificationService\Api\Data;
 
 interface NotificationInterface
 {
@@ -27,7 +27,7 @@ interface NotificationInterface
 
     /**
      * @param int $id
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setId($id);
 
@@ -38,7 +38,7 @@ interface NotificationInterface
 
     /**
      * @param \DateTime|string $createdAt
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setCreatedAt($createdAt): NotificationInterface;
 
@@ -49,7 +49,7 @@ interface NotificationInterface
 
     /**
      * @param int $index
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setIndex(int $index): NotificationInterface;
 
@@ -60,7 +60,7 @@ interface NotificationInterface
 
     /**
      * @param string $version
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setVersion(string $version): NotificationInterface;
 
@@ -71,7 +71,7 @@ interface NotificationInterface
 
     /**
      * @param string $group
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setGroup(string $group): NotificationInterface;
 
@@ -82,7 +82,7 @@ interface NotificationInterface
 
     /**
      * @param string $xpath
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setXpath(string $xpath): NotificationInterface;
 
@@ -93,7 +93,7 @@ interface NotificationInterface
 
     /**
      * @param bool $isSent
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
     public function setIsSent(bool $isSent): NotificationInterface;
 }

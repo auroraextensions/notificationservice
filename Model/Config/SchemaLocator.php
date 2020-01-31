@@ -8,15 +8,15 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Model\Config;
+namespace AuroraExtensions\NotificationService\Model\Config;
 
 use Magento\Framework\{
     Config\SchemaLocatorInterface,
@@ -27,7 +27,7 @@ use Magento\Framework\{
 class SchemaLocator implements SchemaLocatorInterface
 {
     /** @constant string MODULE_NAME */
-    public const MODULE_NAME = 'AuroraExtensions_NotificationOutbox';
+    public const MODULE_NAME = 'AuroraExtensions_NotificationService';
 
     /** @constant string XSD_FILE */
     public const XSD_FILE = 'notifications.xsd';

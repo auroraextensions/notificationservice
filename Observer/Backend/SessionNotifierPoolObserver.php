@@ -10,15 +10,15 @@
  * It is also available on the Internet at the following URL:
  * https://docs.auroraextensions.com/magento/extensions/2.x/notificationnotifier/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Observer\Backend;
+namespace AuroraExtensions\NotificationService\Observer\Backend;
 
-use AuroraExtensions\NotificationOutbox\Api\NotificationManagementInterface;
+use AuroraExtensions\NotificationService\Api\NotificationManagementInterface;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\{
     Event\Observer,
