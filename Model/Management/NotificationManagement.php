@@ -24,7 +24,7 @@ use AuroraExtensions\NotificationOutbox\{
     Api\Data\NotificationInterfaceFactory,
     Api\NotificationManagementInterface,
     Api\NotificationRepositoryInterface,
-    Model\Config\FileReader
+    Model\Config\XmlReader
 };
 use Magento\Framework\{
     Exception\CouldNotSaveException,
@@ -43,8 +43,8 @@ class NotificationManagement implements NotificationManagementInterface
     /** @property NotificationRepositoryInterface $entryRepository */
     protected $entryRepository;
 
-    /** @property FileReader $fileReader */
-    protected $fileReader;
+    /** @property XmlReader $xmlReader */
+    protected $xmlReader;
 
     /** @property LoggerInterface $logger */
     protected $logger;
@@ -55,7 +55,7 @@ class NotificationManagement implements NotificationManagementInterface
     /**
      * @param NotificationInterfaceFactory $entryFactory
      * @param NotificationRepositoryInterface $entryRepository
-     * @param FileReader $fileReader
+     * @param XmlReader $xmlReader
      * @param LoggerInterface $logger
      * @param NotifierInterface $notifierPool
      * @return void
@@ -63,13 +63,13 @@ class NotificationManagement implements NotificationManagementInterface
     public function __construct(
         NotificationInterfaceFactory $entryFactory,
         NotificationRepositoryInterface $entryRepository,
-        FileReader $fileReader,
+        XmlReader $xmlReader,
         LoggerInterface $logger,
         NotifierInterface $notifierPool
     ) {
         $this->entryFactory = $entryFactory;
         $this->entryRepository = $entryRepository;
-        $this->fileReader = $fileReader;
+        $this->xmlReader = $xmlReader;
         $this->logger = $logger;
         $this->notifierPool = $notifierPool;
     }
@@ -102,7 +102,7 @@ class NotificationManagement implements NotificationManagementInterface
     public function processUnsent(): void
     {
         /** @var array $data */
-        $data = $this->fileReader->read();
+        $data = $this->xmlReader->read();
 
         /** @var string $group */
         /** @var array $versions */
@@ -200,13 +200,35 @@ class NotificationManagement implements NotificationManagementInterface
     private function send(array $message = []): void
     {
         try {
-            /** @var string $severity */
-            $severity = $message['severity'] ?? 'notice';
+            /** @var string $levelName */
+            $levelName = $message['severity'] ?? 'notice';
+
+            /** @var int $levelCode */
+            $levelCode = static::SEVERITY[$levelName];
+
+            /** @var string $title */
+            $title = $message['title'] ?? '';
+
+            /** @var string $description */
+            $description = $message['description'] ?? '';
+
+            /** @var array $details */
+            $details = $message['details'] ?? [];
+
+            if (!empty($details)) {
+                array_unshift($details, $description);
+            } else {
+                $details = $description;
+            }
+
+            /** @var string $link */
+            $link = $message['link'] ?? '';
 
             $this->notifierPool->add(
-                static::SEVERITY[$severity],
-                $message['title'],
-                $message['description']
+                $levelCode,
+                $title,
+                $details,
+                $link
             );
         } catch (LocalizedException | Exception $e) {
             $this->logger->error($e->getMessage());
