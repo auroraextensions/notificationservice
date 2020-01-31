@@ -32,11 +32,11 @@ composer require auroraextensions/notificationservice
 Using Notification Service is as simple as adding a `notifications.xml` file to the `etc`
 directory of your module. Below are configuration options and examples.
 
-| Options     | Description                                                                                   | Type   | Default |
-|-------------|-----------------------------------------------------------------------------------------------|--------|---------|
-| title       | The title of the notification. This value is displayed as the first line of the notification. | string |         |
-| description | The description of the notification. This value is displayed under the title.                 | string |         |
-| link        | The notification link. This value is the href of the Read Details link.                       | string |         |
+| Options     | Description                                                                                   | Type   | Required |
+|-------------|-----------------------------------------------------------------------------------------------|--------|----------|
+| title       | The title of the notification. This value is displayed as the first line of the notification. | string | Yes      |
+| description | The description of the notification. This value is displayed under the title.                 | string | Yes      |
+| link        | The notification link. This value is the href of the Read Details link.                       | string | No       |
 
 ## Examples
 
