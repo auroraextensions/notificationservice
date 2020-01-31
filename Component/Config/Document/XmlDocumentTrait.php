@@ -100,15 +100,15 @@ trait XmlDocumentTrait
     /**
      * @param DOMElement $element
      * @param DOMElement|null $parent
-     * @return void
+     * @return DOMElement
      */
     public function appendNode(
         DOMElement $element,
         DOMElement $parent = null
-    ): void
+    ): DOMElement
     {
         /** @var DOMElement $parentNode */
         $parentNode = $parent ?? $this->getDocumentElement();
-        $parentNode->appendChild($element);
+        return $parentNode->appendChild($element);
     }
 }
