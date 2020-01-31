@@ -17,11 +17,11 @@
  */
 -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="config" type="configType"></xs:element>
+    <xs:element type="configType" name="config"/>
 
     <xs:complexType name="configType">
         <xs:sequence>
-            <xs:element type="releasesType" name="releases" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="releasesType" name="releases" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -37,7 +37,6 @@
             <xs:element type="notificationsType" name="notifications" maxOccurs="1" minOccurs="1"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="version" use="required"/>
-        <xs:attribute type="xs:string" name="tag" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="notificationsType">
@@ -48,18 +47,26 @@
 
     <xs:complexType name="notificationType">
         <xs:all>
-            <xs:element name="title" type="translatableType" maxOccurs="1" minOccurs="1"/>
-            <xs:element name="description" type="translatableType" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="translatableType" name="title" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="translatableType" name="description" maxOccurs="1" minOccurs="1"/>
+            <xs:element type="detailsType" name="details" maxOccurs="1" minOccurs="0"/>
+            <xs:element type="translatableType" name="link" maxOccurs="1" minOccurs="0"/>
         </xs:all>
         <xs:attribute type="xs:int" name="index" use="required"/>
         <xs:attribute type="xs:string" name="severity" use="required"/>
         <xs:attribute type="xs:boolean" name="ignore" use="optional" fixed="true"/>
     </xs:complexType>
 
+    <xs:complexType name="detailsType">
+        <xs:sequence>
+            <xs:element type="translatableType" name="item" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
     <xs:complexType name="translatableType">
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute name="translate" use="optional" fixed="true" type="xs:boolean"/>
+                <xs:attribute type="xs:boolean" name="translate" use="optional" fixed="true"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

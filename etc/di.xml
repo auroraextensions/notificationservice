@@ -24,7 +24,7 @@
                 type="AuroraExtensions\NotificationOutbox\Model\Repository\NotificationRepository"/>
     <preference for="AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface"
                 type="AuroraExtensions\NotificationOutbox\Model\Data\Notification"/>
-    <type name="AuroraExtensions\NotificationOutbox\Model\Config\FileReader">
+    <type name="AuroraExtensions\NotificationOutbox\Model\Config\XmlReader">
         <arguments>
             <argument name="converter" xsi:type="object">AuroraExtensions\NotificationOutbox\Model\Config\XmlConverter</argument>
             <argument name="schemaLocator" xsi:type="object">AuroraExtensions\NotificationOutbox\Model\Config\SchemaLocator</argument>

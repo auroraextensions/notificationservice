@@ -71,82 +71,147 @@ class XmlConverter implements ConverterInterface
 
             /** @var DOMNode $releaseNode */
             foreach ($releaseNodes as $releaseNode) {
-                if ($releaseNode->nodeType === XML_ELEMENT_NODE) {
-                    /** @var string $version */
-                    $version = $releaseNode->attributes
-                        ->getNamedItem('version')
-                        ->nodeValue;
+                /** @var string $version */
+                $version = $releaseNode->attributes
+                    ->getNamedItem('version')
+                    ->nodeValue;
 
-                    /** @var DOMElement[] $notifsNodes */
-                    $notifsNodes = $this->getChildNodesByTagName(
-                        $releaseNode,
-                        'notifications'
+                /** @var DOMElement[] $notifsNodes */
+                $notifsNodes = $this->getChildNodesByTagName(
+                    $releaseNode,
+                    'notifications'
+                );
+
+                if (!empty($notifsNodes)) {
+                    /** @var DOMElement $notifsNode */
+                    $notifsNode = $notifsNodes[0];
+
+                    /** @var DOMElement[] $notifNodes */
+                    $notifNodes = $this->getChildNodesByTagName(
+                        $notifsNode,
+                        'notification'
                     );
 
-                    if (!empty($notifsNodes)) {
-                        /** @var DOMElement $notifsNode */
-                        $notifsNode = $notifsNodes[0];
+                    /** @var DOMNode $notifNode */
+                    foreach ($notifNodes as $notifNode) {
+                        /** @var int|string $indexValue */
+                        $indexValue = $notifNode->attributes
+                            ->getNamedItem('index')
+                            ->nodeValue;
 
-                        /** @var DOMNode $notifNode */
-                        foreach ($notifsNode->childNodes as $notifNode) {
-                            if ($notifNode->nodeType === XML_ELEMENT_NODE) {
-                                /** @var int|string $indexValue */
-                                $indexValue = $notifNode->attributes
-                                    ->getNamedItem('index')
-                                    ->nodeValue;
+                        /** @var string|null $severity */
+                        $severity = $notifNode->attributes
+                            ->getNamedItem('severity')
+                            ->nodeValue;
 
-                                /** @var string|null $severity */
-                                $severity = $notifNode->attributes
-                                    ->getNamedItem('severity')
-                                    ->nodeValue;
+                        /** @var DOMNode|null $ignoreNode */
+                        $ignoreNode = $notifNode->attributes
+                            ->getNamedItem('ignore');
 
-                                /** @var DOMNode|null $ignoreNode */
-                                $ignoreNode = $notifNode->attributes
-                                    ->getNamedItem('ignore');
+                        /** @var bool|string $ignoreValue */
+                        $ignoreValue = $ignoreNode !== null ? $ignoreNode->nodeValue : false;
 
-                                /** @var bool|string $ignoreValue */
-                                $ignoreValue = $ignoreNode !== null ? $ignoreNode->nodeValue : false;
+                        /** @var bool $isIgnored */
+                        $isIgnored = $this->booleanUtils
+                            ->toBoolean($ignoreValue);
 
-                                /** @var bool $isIgnored */
-                                $isIgnored = $this->booleanUtils
-                                    ->toBoolean($ignoreValue);
+                        $result[$groupType][$version][$indexValue] = [
+                            'index' => $indexValue,
+                            'severity' => $severity,
+                            'ignore' => $isIgnored,
+                        ];
 
-                                $result[$groupType][$version][$indexValue] = [
-                                    'index' => $indexValue,
-                                    'severity' => $severity,
-                                    'ignore' => $isIgnored,
+                        /** @var DOMElement[] $dataNodes */
+                        $dataNodes = $this->getChildNodes($notifNode);
+
+                        /** @var DOMNode $dataNode */
+                        foreach ($dataNodes as $dataNode) {
+                            /** @var string $tagName */
+                            $tagName = $dataNode->tagName;
+
+                            if ($tagName !== 'details') {
+                                /** @var string $nodeValue */
+                                $nodeValue = $dataNode->nodeValue;
+
+                                /** @var DOMNode|null $translateNode */
+                                $translateNode = $dataNode->attributes->getNamedItem('translate');
+
+                                /** @var bool|string $translateValue */
+                                $translateValue = $translateNode !== null
+                                    ? $translateNode->nodeValue
+                                    : false;
+
+                                /** @var bool $isTranslatable */
+                                $isTranslatable = $this->booleanUtils
+                                    ->toBoolean($translateValue);
+
+                                /** @var string $textValue */
+                                $textValue = $isTranslatable
+                                    ? __($nodeValue)->__toString()
+                                    : $nodeValue;
+
+                                $result[$groupType][$version][$indexValue] += [
+                                    $tagName => $textValue,
                                 ];
+                            } else {
+                                /** @var DOMElement[] $itemNodes */
+                                $itemNodes = $this->getChildNodesByTagName(
+                                    $dataNode,
+                                    'item'
+                                );
 
-                                /** @var DOMNode $dataNode */
-                                foreach ($notifNode->childNodes as $dataNode) {
-                                    if ($dataNode->nodeType === XML_ELEMENT_NODE) {
-                                        /** @var string $tagName */
-                                        $tagName = $dataNode->tagName;
+                                $result[$groupType][$version]
+                                    [$indexValue][$tagName] = [];
 
-                                        /** @var string $nodeValue */
-                                        $nodeValue = $dataNode->nodeValue;
+                                /** @var DOMElement $itemNode */
+                                foreach ($itemNodes as $itemNode) {
+                                    /** @var string $itemValue */
+                                    $itemValue = $itemNode->nodeValue;
 
-                                        /** @var string $translateValue */
-                                        $translateValue = $dataNode->attributes
-                                            ->getNamedItem('translate')
-                                            ->nodeValue;
+                                    /** @var DOMNode|null $itemTranslateNode */
+                                    $itemTranslateNode = $itemNode->attributes
+                                        ->getNamedItem('translate');
 
-                                        /** @var bool $isTranslatable */
-                                        $isTranslatable = $this->booleanUtils
-                                            ->toBoolean($translateValue);
+                                    /** @var bool|string $itemTranslateValue */
+                                    $itemTranslateValue = $itemTranslateNode !== null
+                                        ? $itemTranslateNode->nodeValue
+                                        : false;
 
-                                        /** @var string $textValue */
-                                        $textValue = $isTranslatable ? __($nodeValue)->__toString() : $nodeValue;
+                                    /** @var bool $isItemTranslatable */
+                                    $isItemTranslatable = $this->booleanUtils
+                                        ->toBoolean($itemTranslateValue);
 
-                                        $result[$groupType][$version][$indexValue] += [
-                                            $tagName => $textValue,
-                                        ];
-                                    }
+                                    /** @var string $itemTextValue */
+                                    $itemTextValue = $isItemTranslatable
+                                        ? __($itemValue)->__toString()
+                                        : $itemValue;
+
+                                    $result[$groupType][$version]
+                                        [$indexValue][$tagName][] = $itemTextValue;
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param DOMElement $element
+     * @return array
+     */
+    private function getChildNodes(DOMElement $element): array
+    {
+        /** @var array $result */
+        $result = [];
+
+        /** @var DOMNode $node */
+        foreach ($element->childNodes as $node) {
+            if ($node instanceof DOMElement) {
+                $result[] = $node;
             }
         }
 
@@ -166,9 +231,12 @@ class XmlConverter implements ConverterInterface
         /** @var array $result */
         $result = [];
 
+        /** @var array $nodes */
+        $nodes = $this->getChildNodes($element);
+
         /** @var DOMNode $node */
-        foreach ($element->childNodes as $node) {
-            if ($node instanceof DOMElement && $node->tagName === $tagName) {
+        foreach ($nodes as $node) {
+            if ($node->tagName === $tagName) {
                 $result[] = $node;
             }
         }
