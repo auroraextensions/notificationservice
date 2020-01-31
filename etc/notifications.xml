@@ -24,6 +24,7 @@
                 <notification index="0" severity="notice">
                     <title translate="true">Initial release of Notification Service by Aurora Extensions.</title>
                     <description translate="true">This is the initial release of Notification Service by Aurora Extensions.</description>
+                    <link>https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/latest/</link>
                 </notification>
             </notifications>
         </release>
