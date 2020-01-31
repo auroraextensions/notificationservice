@@ -1,3 +1,3 @@
-# Notification Outbox
+# Notification Service
 
 Publish backend notifications via XML.

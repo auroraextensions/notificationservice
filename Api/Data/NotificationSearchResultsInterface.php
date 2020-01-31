@@ -8,27 +8,27 @@
  * is bundled with this package in the file LICENSE.txt.
  *
  * It is also available on the Internet at the following URL:
- * https://docs.auroraextensions.com/magento/extensions/2.x/notificationoutbox/LICENSE.txt
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
  *
- * @package       AuroraExtensions_NotificationOutbox
+ * @package       AuroraExtensions_NotificationService
  * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
  * @license       MIT License
  */
 declare(strict_types=1);
 
-namespace AuroraExtensions\NotificationOutbox\Api\Data;
+namespace AuroraExtensions\NotificationService\Api\Data;
 
 use Magento\Framework\Api\SearchResultsInterface;
 
 interface NotificationSearchResultsInterface extends SearchResultsInterface
 {
     /**
-     * @return \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface[]
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface[]
      */
     public function getItems();
 
     /**
-     * @param \AuroraExtensions\NotificationOutbox\Api\Data\NotificationInterface[] $items
+     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface[] $items
      * @return \Magento\Framework\Api\SearchResultsInterface
      */
     public function setItems(array $items);
