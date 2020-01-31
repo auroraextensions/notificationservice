@@ -43,7 +43,7 @@ interface XmlDocumentInterface
      * @param string $tagName
      * @return array
      */
-    public function getChildNodes(DOMElement $element, string $tagName): array;
+    public function getChildNodesByTagName(DOMElement $element, string $tagName): array;
 
     /**
      * @param DOMElement $element
