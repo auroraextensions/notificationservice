@@ -54,10 +54,8 @@ class XmlConverter implements ConverterInterface
             'releases'
         );
 
-        if (!empty($releasesNodes)) {
-            /** @var DOMElement $releasesNode */
-            $releasesNode = $releasesNodes[0];
-
+        /** @var DOMElement $releasesNode */
+        foreach ($releasesNodes as $releasesNode) {
             /** @var string $groupType */
             $groupType = $releasesNode->attributes
                 ->getNamedItem('group')

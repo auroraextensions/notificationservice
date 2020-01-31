@@ -18,11 +18,15 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationService\Model\Config;
 
-use AuroraExtensions\NotificationService\Exception\ExceptionFactory;
+use DOMDocument;
+use AuroraExtensions\NotificationService\{
+    Exception\ExceptionFactory,
+    Csi\Config\Document\XmlDocumentInterface,
+    Csi\Config\Document\XmlDocumentInterfaceFactory
+};
 use Magento\Framework\{
     Config\ConverterInterface,
     Config\Dom,
-    Config\DomFactory,
     Config\Dom\ValidationException,
     Config\FileIterator,
     Config\FileResolverInterface,
@@ -47,8 +51,8 @@ class XmlReader implements ReaderInterface
     /** @property string $defaultScope */
     protected $defaultScope;
 
-    /** @property string $domFactory */
-    protected $domFactory;
+    /** @property XmlDocumentInterfaceFactory $documentFactory */
+    protected $documentFactory;
 
     /** @property ExceptionFactory $exceptionFactory */
     protected $exceptionFactory;
@@ -70,20 +74,20 @@ class XmlReader implements ReaderInterface
 
     /**
      * @param ConverterInterface $converter
-     * @param DomFactory $domFactory
+     * @param XmlDocumentInterfaceFactory $documentFactory
      * @param ExceptionFactory $exceptionFactory
      * @param FileResolverInterface $fileResolver
      * @param SchemaLocatorInterface $schemaLocator
      * @param ValidationStateInterface $validationState
      * @param string $fileName
      * @param array $idAttributes
-     * @param string $domFactory
+     * @param string $documentFactory
      * @param string $defaultScope
      * @return void
      */
     public function __construct(
         ConverterInterface $converter,
-        DomFactory $domFactory,
+        XmlDocumentInterfaceFactory $documentFactory,
         ExceptionFactory $exceptionFactory,
         FileResolverInterface $fileResolver,
         SchemaLocatorInterface $schemaLocator,
@@ -93,7 +97,7 @@ class XmlReader implements ReaderInterface
         string $defaultScope = 'global'
     ) {
         $this->converter = $converter;
-        $this->domFactory = $domFactory;
+        $this->documentFactory = $documentFactory;
         $this->exceptionFactory = $exceptionFactory;
         $this->fileResolver = $fileResolver;
         $this->schemaLocator = $schemaLocator;
@@ -131,17 +135,32 @@ class XmlReader implements ReaderInterface
      */
     private function readFiles(array $files = []): array
     {
-        /** @var string $fileXml */
-        $fileXml = array_shift($files);
-
-        /** @var Dom $xmlMerger */
-        $xmlMerger = $this->getXmlMerger($fileXml);
+        /** @var DOMDocument $sourceXml */
+        $sourceXml = $this->documentFactory->create();
 
         /** @var string $key */
         /** @var string $xml */
         foreach ($files as $key => $xml) {
             try {
-                $xmlMerger->merge($xml);
+                /** @var XmlDocument $moduleXml */
+                $moduleXml = $this->documentFactory->create([
+                    'xml' => $xml,
+                ]);
+
+                /** @var DOMElement[] $xmlNodes */
+                $xmlNodes = $moduleXml->getChildNodesByTagName(
+                    $moduleXml->getDocumentElement(),
+                    'releases'
+                );
+
+                if (!empty($xmlNodes)) {
+                    /** @var DOMElement $xmlNode */
+                    $xmlNode = $xmlNodes[0];
+
+                    $sourceXml->appendNode(
+                        $sourceXml->importNode($xmlNode)
+                    );
+                }
             } catch (ValidationException | LocalizedException $e) {
                 /** @var LocalizedException $exception */
                 $exception = $this->exceptionFactory->create(
@@ -157,41 +176,50 @@ class XmlReader implements ReaderInterface
             }
         }
 
-        if ($this->isValidationRequired()) {
-            /** @var array $errors */
-            $errors = [];
+        /** @var DOMDocument $document */
+        $document = $sourceXml->getDocument();
 
-            if (!$xmlMerger->validate($this->getSchemaFile(), $errors)) {
-                /** @var string $message */
-                $message = "Invalid Document\n" . implode("\n", $errors);
+        /** @var array $errors */
+        $errors = [];
 
-                /** @var LocalizedException $exception */
-                $exception = $this->exceptionFactory->create(
-                    LocalizedException::class,
-                    __($message)
-                );
+        if (!$this->validate($document, $errors)) {
+            /** @var string $message */
+            $message = "Invalid Document\n" . implode("\n", $errors);
 
-                throw $exception;
-            }
+            /** @var LocalizedException $exception */
+            $exception = $this->exceptionFactory->create(
+                LocalizedException::class,
+                __($message)
+            );
+
+            throw $exception;
         }
 
         return $this->converter
-            ->convert($xmlMerger->getDom());
+            ->convert($document);
     }
 
     /**
-     * @param string $xml
-     * @return Dom
+     * @param DOMDocument $document
+     * @param array $errors
+     * @return bool
      */
-    private function getXmlMerger(string $xml): Dom
+    private function validate(
+        DOMDocument $document,
+        array &$errors = []
+    ): bool
     {
-        return $this->domFactory->createDom([
-            'xml' => $xml,
-            'validationState' => $this->validationState,
-            'idAttributes' => $this->idAttributes,
-            'typeAttributeName' => null,
-            'schemaFile' => $this->getPerFileSchema(),
-        ]);
+        if ($this->isValidationRequired()) {
+            /** @var array $errors */
+            $errors = Dom::validateDomDocument(
+                $document,
+                $this->getSchemaFile()
+            );
+
+            return !count($errors);
+        }
+
+        return true;
     }
 
     /**
