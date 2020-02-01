@@ -172,4 +172,4 @@ Required    No
 Footnotes
 =========
 
-.. [#ref1] `Magento\Framework\Notification\MessageInterface <https://github.com/magento/magento2/blob/2.3/lib/internal/Magento/Framework/Notification/MessageInterface.php>`_
+.. [#ref1] `Magento\\Framework\\Notification\\MessageInterface <https://github.com/magento/magento2/blob/2.3/lib/internal/Magento/Framework/Notification/MessageInterface.php>`_
