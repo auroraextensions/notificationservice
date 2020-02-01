@@ -3,15 +3,17 @@
 Description
 ===========
 
-The process to publish notifications in Magento is not exactly ideal. Consequently, most
-extension vendors don't bother to use it for important events like API breaking changes,
-EOL announcements, or deprecation of certain extension features.
+Magento provides a backend notification system that lacks powerful features, like auto-publish
+and discovery. Consequently, many extension vendors don't effectively utilize it for important
+announcements, like API-breaking releases, EOL notices, or deprecation of specific extension
+features, which can lead to issues for agencies and merchants alike.
 
-Wouldn't it be nice if you could just add, say, an XML file to your module that contains
-the notifications you want to publish, and that's all? We believe improving transparency
-between extension vendors and merchants is crucial to the longevity of both parties, as
-well as Magento as an ecommerce platform, and this serves as another step toward better,
-more transparent communications between vendors and merchants.
+To address this issue, wouldn't it be nice if you could just add, say, an XML file to your module,
+which contains the notifications you want to publish, and the rest is handled by the notification
+system? It would remove the need for notification-specific models and data patches, and would not
+require setup upgrade to run in order for new notifications to publish.
+
+*Bottom line*: It needs to be dead simple to use.
 
 Installation
 ============
@@ -96,8 +98,7 @@ Required    No
 Examples
 ========
 
-Below is an example ``notifications.xml``. For information on schema, visit the
-`XML Schema`_ section.
+Below is an example ``notifications.xml``. For information on schema, see `XML Schema`_.
 
 .. code-block:: XML
 
