@@ -113,19 +113,21 @@ Required    Yes
 The ``<notification>`` node describes the various components of a specific notification and has
 two (2) attributes, ``index`` and ``severity``. The value of the ``index`` attribute must be an
 ``int``, which denotes the notification position in the resulting array of notifications. The value
-of the ``severity`` attribute maps to levels defined in ``Magento\Framework\Notification\MessageInterface``,
-and must be one of the following:
+of the ``severity`` attribute maps to levels defined in ``MessageInterface`` [#ref1]_, and must be one
+of the following:
 
 * ``critical``
 * ``major``
 * ``minor``
 * ``notice``
 
-It should contain only one (1) node per each of following types:
+It should contain only one (1) node per each of the following types:
 
 * ``<title>``
 * ``<description>``
 * ``<link>`` (Optional)
+
+|
 
 ==========  ================================
 Element     ``<notification>``
@@ -166,3 +168,8 @@ XPath       ``/config/releases/release/notifications/notification/link``
 Attributes  None
 Required    No
 ==========  ================================
+
+Footnotes
+=========
+
+.. [#ref1] `MessageInterface <https://github.com/magento/magento2/blob/2.3/lib/internal/Magento/Framework/Notification/MessageInterface.php>`_
