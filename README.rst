@@ -58,20 +58,21 @@ Below is an example ``notifications.xml``. For information on schema, see `XML S
 XML Schema
 ==========
 
-To keep it simple, the XSD only provides for a few element and attribute types.
+To keep it simple, the XSD provides a minimal set of element and attribute types.
 
-As with most other Magento XML configurations, the ``<config>`` tag serves as the root node.
-All subsequent nodes are nested under the ``<config>`` node.
+As with many Magento XML configurations, ``<config>`` serves as the root node. All subsequent
+nodes are descendants of ``<config>``.
 
 <releases>
 ----------
 
 The ``<releases>`` node is the outermost node and has one (1) attribute, ``group``. The value
 of the ``group`` attribute should be universally unique to prevent unwanted merging. It is an
-``array``-type node.
+``array``-type and should contain only ``<release>`` nodes.
 
 ==========  ================================
 Element     ``<releases>``
+Parent      ``<config>``
 XPath       ``/config/releases``
 Attributes  :group: ``string`` (Required)
 Required    Yes
@@ -82,11 +83,12 @@ Required    Yes
 
 The ``<release>`` node has one (1) attribute, ``version``. The value of the ``version``
 attribute should be the module version associated with the specific notification(s).
+It should contain only one (1) ``<notifications>`` node.
 
 ==========  ================================
 Element     ``<release>``
-XPath       ``/config/releases/release``
 Parent      ``<releases>``
+XPath       ``/config/releases/release``
 Attributes  :version: ``string`` (Required)
 Required    Yes
 ==========  ================================
@@ -94,13 +96,13 @@ Required    Yes
 <notifications>
 ---------------
 
-The ``<notifications>`` node contains only ``<notification>`` nodes and has no associated
-attributes. It is an ``array``-type node.
+The ``<notifications>`` node is an ``array``-type node and should only contain ``<notification>``
+nodes. It has no associated attributes.
 
 ==========  ================================
 Element     ``<notifications>``
-XPath       ``/config/releases/release/notifications``
 Parent      ``<release>``
+XPath       ``/config/releases/release/notifications``
 Attributes  None
 Required    Yes
 ==========  ================================
@@ -110,7 +112,7 @@ Required    Yes
 
 The ``<notification>`` node describes the various components of a specific notification and has
 two (2) attributes, ``index`` and ``severity``. The value of the ``index`` attribute must be an
-``int`` and denotes the notifications position in the resulting array of notifications. The value
+``int``, which denotes the notification position in the resulting array of notifications. The value
 of the ``severity`` attribute maps to levels defined in ``Magento\Framework\Notification\MessageInterface``,
 and must be one of the following:
 
@@ -119,10 +121,16 @@ and must be one of the following:
 * ``minor``
 * ``notice``
 
+It should contain only one (1) node per each of following types:
+
+* ``<title>``
+* ``<description>``
+* ``<link>`` (Optional)
+
 ==========  ================================
 Element     ``<notification>``
-XPath       ``/config/releases/release/notifications/notification``
 Parent      ``<notifications>``
+XPath       ``/config/releases/release/notifications/notification``
 Attributes  :index: ``int`` (Required)
             :severity: ``string`` (Required)
 Required    Yes
@@ -133,14 +141,14 @@ Required    Yes
 
 The ``<title>`` and ``<description>`` nodes comprise the corpus of the notification. The ``<title>``
 node contains the text to display on the first line of the notification, and the ``<description>``
-node contains the body of the notification. Both nodes accept one (1) attribute, ``translate``. The
+node contains the body of the notification. Both nodes provide one (1) attribute, ``translate``. The
 value of the ``translate`` attribute should always be ``true``, otherwise simply omit the attribute
-for the equivalent of ``false``.
+to prevent translation.
 
 ==========  ================================
 Element     ``<title>``, ``<description>``
-XPath       ``/config/releases/release/notifications/notification/*[self::title or self::description]``
 Parent      ``<notification>``
+XPath       ``/config/releases/release/notifications/notification/*[self::title or self::description]``
 Attributes  :translate: ``bool`` (Optional)
 Required    Yes
 ==========  ================================
@@ -149,11 +157,12 @@ Required    Yes
 ------
 
 The ``<link>`` node contains a URL for the *Read Details* link. This node is optional and can be omitted.
+It has no associated attributes.
 
 ==========  ================================
 Element     ``<link>``
-XPath       ``/config/releases/release/notifications/notification/link``
 Parent      ``<notification>``
+XPath       ``/config/releases/release/notifications/notification/link``
 Attributes  None
 Required    No
 ==========  ================================
