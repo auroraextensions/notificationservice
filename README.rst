@@ -58,8 +58,14 @@ Below is an example ``notifications.xml``. For information on schema, see `XML S
 XML Schema
 ==========
 
-To keep it simple, there are only a few element and attribute types provided by the XSD.
-Element and attribute types are marked accordingly, along with XSD requirements.
+To keep it simple, the XSD only provides for a few element and attribute types.
+
+As with most other Magento XML configurations, the ``<config>`` tag serves as the root node.
+All subsequent nodes are nested under the ``<config>`` node.
+
+The ``<releases>`` node is the outermost node and has one (1) attribute, ``group``. The value
+of the ``group`` attribute should be universally unique to prevent unwanted merging. This node
+is an ``array``-type node.
 
 .. _notificationservice_xml_schema_element_releases:
 
@@ -71,6 +77,9 @@ Required    Yes
 ==========  ================================
 
 |
+
+The ``<release>`` node has one (1) attribute, ``version``. The value of the ``version``
+attribute should be the module version associated with the specific notification(s).
 
 .. _notificationservice_xml_schema_element_release:
 
@@ -84,6 +93,9 @@ Required    Yes
 
 |
 
+The ``<notifications>`` node contains several ``<notification>`` nodes and has no associated
+attributes. This node is an ``array``-type node.
+
 .. _notificationservice_xml_schema_element_notifications:
 
 ==========  ================================
@@ -95,6 +107,17 @@ Required    Yes
 ==========  ================================
 
 |
+
+The ``<notification>`` node describes the various components of a specific notification and has
+two (2) attributes, ``index`` and ``severity``. The value of the ``index`` attribute must be an
+``int`` and denotes the notifications position in the resulting array of notifications. The value
+of the ``severity`` attribute maps to levels defined in ``Magento\Framework\Notification\MessageInterface``,
+and must be one of the following:
+
+* ``critical``
+* ``major``
+* ``minor``
+* ``notice``
 
 .. _notificationservice_xml_schema_element_notification:
 
@@ -111,6 +134,12 @@ Required    Yes
 
 .. _notificationservice_xml_schema_elements_title_description:
 
+The ``<title>`` and ``<description>`` nodes comprise the corpus of the notification. The ``<title>``
+node contains the text to display on the first line of the notification, and the ``<description>``
+node contains the body of the notification. Both nodes accept one (1) attribute, ``translate``. The
+value of the ``translate`` attribute should always be ``true``, otherwise simply omit the attribute
+for the equivalent of ``false``.
+
 ==========  ================================
 Element     ``<title>``, ``<description>``
 XPath       ``/config/releases/release/notifications/notification/*[self::title or self::description]``
@@ -120,6 +149,9 @@ Required    Yes
 ==========  ================================
 
 |
+
+The ``<link>`` node specifies an external hyperlink for the ``href`` value of the *Read Details* link.
+This node is optional and can be omitted.
 
 .. _notificationservice_xml_schema_element_link:
 
