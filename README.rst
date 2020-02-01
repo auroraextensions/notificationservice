@@ -27,6 +27,34 @@ Configuration
 
 Configuration is as simple as adding a ``notifications.xml`` file to the module ``etc`` directory.
 
+Examples
+========
+
+Below is an example ``notifications.xml``. For information on schema, see `XML Schema`_.
+
+.. code-block:: XML
+
+    <?xml version="1.0"?>
+    <!--
+    /**
+     * notifications.xml
+     */
+    -->
+    <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="urn:magento:module:AuroraExtensions_NotificationService/etc/notifications.xsd">
+        <releases group="notificationservice">
+            <release version="1.0.0">
+                <notifications>
+                    <notification index="0" severity="notice">
+                        <title translate="true">Notification title</title>
+                        <description translate="true">This is the notification description.</description>
+                        <link>https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/latest/</link>
+                    </notification>
+                </notifications>
+            </release>
+        </releases>
+    </config>
+
 XML Schema
 ==========
 
@@ -86,6 +114,8 @@ Attributes  :translate: ``bool`` (Optional)
 Required    Yes
 ==========  ================================
 
+|
+
 .. _notificationservice_xml_schema_element_link:
 
 ==========  ================================
@@ -94,31 +124,3 @@ Parent      ``<notification>``
 Attributes  None
 Required    No
 ==========  ================================
-
-Examples
-========
-
-Below is an example ``notifications.xml``. For information on schema, see `XML Schema`_.
-
-.. code-block:: XML
-
-    <?xml version="1.0"?>
-    <!--
-    /**
-     * notifications.xml
-     */
-    -->
-    <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:noNamespaceSchemaLocation="urn:magento:module:AuroraExtensions_NotificationService/etc/notifications.xsd">
-        <releases group="notificationservice">
-            <release version="1.0.0">
-                <notifications>
-                    <notification index="0" severity="notice">
-                        <title translate="true">Notification title</title>
-                        <description translate="true">This is the notification description.</description>
-                        <link>https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/latest/</link>
-                    </notification>
-                </notifications>
-            </release>
-        </releases>
-    </config>
