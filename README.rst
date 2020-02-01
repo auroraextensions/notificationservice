@@ -67,8 +67,8 @@ All subsequent nodes are nested under the ``<config>`` node.
 ----------
 
 The ``<releases>`` node is the outermost node and has one (1) attribute, ``group``. The value
-of the ``group`` attribute should be universally unique to prevent unwanted merging. This node
-is an ``array``-type node.
+of the ``group`` attribute should be universally unique to prevent unwanted merging. It is an
+``array``-type node.
 
 ==========  ================================
 Element     ``<releases>``
@@ -94,8 +94,8 @@ Required    Yes
 <notifications>
 ---------------
 
-The ``<notifications>`` node contains several ``<notification>`` nodes and has no associated
-attributes. This node is an ``array``-type node.
+The ``<notifications>`` node contains only ``<notification>`` nodes and has no associated
+attributes. It is an ``array``-type node.
 
 ==========  ================================
 Element     ``<notifications>``
