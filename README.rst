@@ -89,8 +89,8 @@ Required    Yes
 Examples
 --------
 
-Below is an example ``notifications.xml`` configuration. For information on document
-schema, visit the `XML Schema`_ section.
+Below is an example ``notifications.xml``. For information on schema, visit the
+`XML Schema`_ section.
 
 .. code-block:: XML
 
