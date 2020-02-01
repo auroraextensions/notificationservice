@@ -1,12 +1,7 @@
 .. contents:: :local:
 
-Notification Service
-====================
-
-Publish backend notifications via XML.
-
 Description
------------
+===========
 
 The process to publish notifications in Magento is not exactly ideal. Consequently, most
 extension vendors don't bother to use it for important events like API breaking changes,
@@ -19,22 +14,24 @@ well as Magento as an ecommerce platform, and this serves as another step toward
 more transparent communications between vendors and merchants.
 
 Installation
-------------
+============
 
 .. code-block:: sh
 
     composer require auroraextensions/notificationservice
 
 Configuration
--------------
+=============
 
 Configuration is as simple as adding a ``notifications.xml`` file to the module ``etc`` directory.
 
 XML Schema
-----------
+==========
 
 To keep it simple, there are only a few element and attribute types provided by the XSD.
 Element and attribute types are marked accordingly, along with XSD requirements.
+
+.. _notificationservice_xml_schema_element_releases:
 
 ==========  ================================
 Element     ``<releases>``
@@ -43,6 +40,8 @@ Required    Yes
 ==========  ================================
 
 |
+
+.. _notificationservice_xml_schema_element_release:
 
 ==========  ================================
 Element     ``<release>``
@@ -53,6 +52,8 @@ Required    Yes
 
 |
 
+.. _notificationservice_xml_schema_element_notifications:
+
 ==========  ================================
 Element     ``<notifications>``
 Parent      ``<release>``
@@ -61,6 +62,8 @@ Required    Yes
 ==========  ================================
 
 |
+
+.. _notificationservice_xml_schema_element_notification:
 
 ==========  ================================
 Element     ``<notification>``
@@ -72,6 +75,8 @@ Required    Yes
 
 |
 
+.. _notificationservice_xml_schema_elements_title_description:
+
 ==========  ================================
 Element     ``<title>``, ``<description>``
 Parent      ``<notification>``
@@ -79,15 +84,17 @@ Attributes  :translate: ``bool`` (Optional)
 Required    Yes
 ==========  ================================
 
+.. _notificationservice_xml_schema_element_link:
+
 ==========  ================================
 Element     ``<link>``
 Parent      ``<notification>``
 Attributes  None
-Required    Yes
+Required    No
 ==========  ================================
 
 Examples
---------
+========
 
 Below is an example ``notifications.xml``. For information on schema, visit the
 `XML Schema`_ section.
