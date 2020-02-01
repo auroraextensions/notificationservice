@@ -60,8 +60,7 @@ XML Schema
 
 To keep it simple, the XSD provides a minimal set of element and attribute types.
 
-As with many Magento XML configurations, ``<config>`` serves as the root node. All subsequent
-nodes are descendants of ``<config>``.
+As with many Magento XML configurations, ``<config>`` is the root node. All other nodes are descendants of ``<config>``.
 
 <releases>
 ----------
