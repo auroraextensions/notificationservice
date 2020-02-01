@@ -14,6 +14,7 @@
   },
   "require": {
     "php": ">=7.1",
+    "ext-dom": "*",
     "magento/framework": "102.*.*",
     "magento/module-admin-notification": "100.*.*",
     "magento/module-backend": "101.*.*"
