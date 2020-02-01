@@ -1,12 +1,9 @@
+.. contents:: :local:
+
 Notification Service
 ====================
 
 Publish backend notifications via XML.
-
-Table of Contents
------------------
-
-.. contents:: :local:
 
 Description
 -----------
