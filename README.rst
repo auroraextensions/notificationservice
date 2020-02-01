@@ -65,6 +65,7 @@ Element and attribute types are marked accordingly, along with XSD requirements.
 
 ==========  ================================
 Element     ``<releases>``
+XPath       ``/config/releases``
 Attributes  :group: ``string`` (Required)
 Required    Yes
 ==========  ================================
@@ -75,6 +76,7 @@ Required    Yes
 
 ==========  ================================
 Element     ``<release>``
+XPath       ``/config/releases/release``
 Parent      ``<releases>``
 Attributes  :version: ``string`` (Required)
 Required    Yes
@@ -86,6 +88,7 @@ Required    Yes
 
 ==========  ================================
 Element     ``<notifications>``
+XPath       ``/config/releases/release/notifications``
 Parent      ``<release>``
 Attributes  None
 Required    Yes
@@ -97,6 +100,7 @@ Required    Yes
 
 ==========  ================================
 Element     ``<notification>``
+XPath       ``/config/releases/release/notifications/notification``
 Parent      ``<notifications>``
 Attributes  :index: ``int`` (Required)
             :severity: ``string`` (Required)
@@ -109,6 +113,7 @@ Required    Yes
 
 ==========  ================================
 Element     ``<title>``, ``<description>``
+XPath       ``/config/releases/release/notifications/notification/*[self::title or self::description]``
 Parent      ``<notification>``
 Attributes  :translate: ``bool`` (Optional)
 Required    Yes
@@ -120,6 +125,7 @@ Required    Yes
 
 ==========  ================================
 Element     ``<link>``
+XPath       ``/config/releases/release/notifications/notification/link``
 Parent      ``<notification>``
 Attributes  None
 Required    No
