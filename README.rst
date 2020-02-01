@@ -77,8 +77,6 @@ Attributes  :group: ``string`` (Required)
 Required    Yes
 ==========  ================================
 
-|
-
 <release>
 ---------
 
@@ -93,8 +91,6 @@ Attributes  :version: ``string`` (Required)
 Required    Yes
 ==========  ================================
 
-|
-
 <notifications>
 ---------------
 
@@ -108,8 +104,6 @@ Parent      ``<release>``
 Attributes  None
 Required    Yes
 ==========  ================================
-
-|
 
 <notification>
 --------------
@@ -134,8 +128,6 @@ Attributes  :index: ``int`` (Required)
 Required    Yes
 ==========  ================================
 
-|
-
 <title>,<description>
 ---------------------
 
@@ -153,13 +145,10 @@ Attributes  :translate: ``bool`` (Optional)
 Required    Yes
 ==========  ================================
 
-|
-
 <link>
 ------
 
-The ``<link>`` node specifies an external hyperlink for the ``href`` value of the *Read Details* link.
-This node is optional and can be omitted.
+The ``<link>`` node contains a URL for the *Read Details* link. This node is optional and can be omitted.
 
 ==========  ================================
 Element     ``<link>``
