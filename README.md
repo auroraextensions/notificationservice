@@ -29,8 +29,9 @@ composer require auroraextensions/notificationservice
 
 ## Configuration
 
-Using Notification Service is as simple as adding a `notifications.xml` file to the `etc`
-directory of your module. Below are configuration options and examples.
+Configuration is as simple as adding a `notifications.xml` file to your module `etc` directory.
+
+## Schema
 
 | Options     | Description                                                                                   | Type   | Required |
 |-------------|-----------------------------------------------------------------------------------------------|--------|----------|
