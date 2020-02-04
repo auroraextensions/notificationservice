@@ -13,7 +13,7 @@ which contains the notifications you want to publish, and the rest is handled by
 system? It would remove the need for notification-specific models and data patches, and would not
 require setup upgrade to run in order for new notifications to publish.
 
-*Bottom line*: It needs to be dead simple to use.
+*Bottom line*: It should be dead simple to use.
 
 Installation
 ============
