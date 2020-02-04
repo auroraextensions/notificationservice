@@ -46,9 +46,21 @@ Below is an example ``notifications.xml``. For information on schema, see `XML S
             <release version="1.0.0">
                 <notifications>
                     <notification index="0" severity="notice">
-                        <title translate="true">Notification title</title>
-                        <description translate="true">This is the notification description.</description>
-                        <link>https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/latest/</link>
+                        <title translate="true">v1.0.0 low-priority notification title</title>
+                        <description translate="true">This is a low-priority notification about v1.0.0.</description>
+                    </notification>
+                    <notification index="1" severity="major">
+                        <title translate="true">v1.0.0 high-priority notification title</title>
+                        <description translate="true">This is a high-priority notification about v1.0.0.</description>
+                        <link>https://www.example.com/</link>
+                    </notification>
+                </notifications>
+            </release>
+            <release version="1.0.1">
+                <notifications>
+                    <notification index="0" severity="minor">
+                        <title translate="true">v1.0.1 medium-priority notification title</title>
+                        <description translate="true">This is a medium-priority notification about v1.0.1.</description>
                     </notification>
                 </notifications>
             </release>
