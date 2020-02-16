@@ -26,11 +26,19 @@
                 type="AuroraExtensions\NotificationService\Model\Data\Notification"/>
     <preference for="AuroraExtensions\NotificationService\Csi\Config\Document\XmlDocumentInterface"
                 type="AuroraExtensions\NotificationService\Model\Config\Document\XmlDocument"/>
+    <preference for="AuroraExtensions\NotificationService\Csi\Config\ModuleConfigInterface"
+                type="AuroraExtensions\NotificationService\Model\Config\ModuleConfig"/>
 
     <type name="AuroraExtensions\NotificationService\Model\Config\XmlReader">
         <arguments>
             <argument name="converter" xsi:type="object">AuroraExtensions\NotificationService\Model\Config\XmlConverter</argument>
             <argument name="schemaLocator" xsi:type="object">AuroraExtensions\NotificationService\Model\Config\SchemaLocator</argument>
+        </arguments>
+    </type>
+
+    <type name="AuroraExtensions\NotificationService\Api\NotificationManagementInterface">
+        <arguments>
+            <argument name="xmlReader" xsi:type="object">AuroraExtensions\NotificationService\Model\Config\XmlReader</argument>
         </arguments>
     </type>
 </config>
