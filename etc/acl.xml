@@ -21,6 +21,11 @@
     <acl>
         <resources>
             <resource id="Magento_Backend::admin">
+                <resource id="AuroraExtensions_NotificationService::notification" title="Notifications" translate="title" sortOrder="10">
+                    <resource id="AuroraExtensions_NotificationService::actions" title="Actions" translate="title" sortOrder="10">
+                        <resource id="AuroraExtensions_NotificationService::create" title="Create" translate="title" sortOrder="10"/>
+                    </resource>
+                </resource>
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
