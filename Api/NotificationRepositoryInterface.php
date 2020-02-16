@@ -35,16 +35,16 @@ interface NotificationRepositoryInterface
     public function getById(int $id): Data\NotificationInterface;
 
     /**
-     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $entry
+     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $notification
      * @return int
      */
-    public function save(Data\NotificationInterface $entry): int;
+    public function save(Data\NotificationInterface $notification): int;
 
     /**
-     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $entry
+     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $notification
      * @return bool
      */
-    public function delete(Data\NotificationInterface $entry): bool;
+    public function delete(Data\NotificationInterface $notification): bool;
 
     /**
      * @param int $id
