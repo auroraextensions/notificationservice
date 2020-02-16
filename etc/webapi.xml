@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * webapi.xml
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the MIT License, which
+ * is bundled with this package in the file LICENSE.txt.
+ *
+ * It is also available on the Internet at the following URL:
+ * https://docs.auroraextensions.com/magento/extensions/2.x/notificationservice/LICENSE.txt
+ *
+ * @package       AuroraExtensions_NotificationService
+ * @copyright     Copyright (C) 2020 Aurora Extensions <support@auroraextensions.com>
+ * @license       MIT License
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/notificationservice" method="POST">
+        <service class="AuroraExtensions\NotificationService\Api\NotificationManagementInterface" method="send"/>
+        <resources>
+            <resource ref="AuroraExtensions_NotificationService::create"/>
+        </resources>
+    </route>
+</routes>

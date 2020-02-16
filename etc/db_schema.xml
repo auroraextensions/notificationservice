@@ -21,11 +21,15 @@
     <table name="notificationservice_entry" resource="default" engine="innodb" comment="Notification Service Entries">
         <column xsi:type="int" name="entry_id" padding="10" unsigned="true" nullable="false" identity="true"
                 comment="Entry ID"/>
-        <column xsi:type="varchar" name="group" nullable="false" length="128" comment="Group"/>
-        <column xsi:type="varchar" name="version" nullable="false" length="128" comment="Version"/>
+        <column xsi:type="varchar" name="group" nullable="false" length="64" comment="Group"/>
+        <column xsi:type="varchar" name="version" nullable="false" length="32" comment="Version"/>
         <column xsi:type="int" name="index" padding="10" unsigned="true" nullable="false" default="0"
                 comment="Index"/>
-        <column xsi:type="varchar" name="xpath" nullable="false" length="256" comment="XPath"/>
+        <column xsi:type="varchar" name="xpath" nullable="false" length="128" comment="XPath"/>
+        <column xsi:type="varchar" name="severity" nullable="false" length="16" comment="Severity"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="256" comment="Title"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="1024" comment="Description"/>
+        <column xsi:type="varchar" name="link" nullable="true" length="256" comment="Link"/>
         <column xsi:type="smallint" name="is_sent" padding="5" unsigned="true" nullable="false" default="0"
                 comment="Is Sent"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"

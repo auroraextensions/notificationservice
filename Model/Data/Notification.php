@@ -35,9 +35,9 @@ class Notification extends AbstractModel implements NotificationInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedAt(): string
+    public function getCreatedAt(): ?string
     {
         return $this->getData('created_at');
     }
@@ -121,6 +121,78 @@ class Notification extends AbstractModel implements NotificationInterface
     public function setXpath(string $xpath): NotificationInterface
     {
         $this->setData('xpath', $xpath);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSeverity(): string
+    {
+        return $this->getData('severity');
+    }
+
+    /**
+     * @param string $severity
+     * @return NotificationInterface
+     */
+    public function setSeverity(string $severity): NotificationInterface
+    {
+        $this->setData('severity', $severity);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->getData('title');
+    }
+
+    /**
+     * @param string $title
+     * @return NotificationInterface
+     */
+    public function setTitle(string $title): NotificationInterface
+    {
+        $this->setData('title', $title);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->getData('description');
+    }
+
+    /**
+     * @param string $description
+     * @return NotificationInterface
+     */
+    public function setDescription(string $description): NotificationInterface
+    {
+        $this->setData('description', $description);
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLink(): ?string
+    {
+        return $this->getData('link');
+    }
+
+    /**
+     * @param string $link
+     * @return NotificationInterface
+     */
+    public function setLink(string $link): NotificationInterface
+    {
+        $this->setData('link', $link);
         return $this;
     }
 

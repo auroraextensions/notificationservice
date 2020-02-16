@@ -18,7 +18,11 @@ declare(strict_types=1);
 
 namespace AuroraExtensions\NotificationService\Observer\Backend;
 
-use AuroraExtensions\NotificationService\Api\NotificationManagementInterface;
+use AuroraExtensions\NotificationService\{
+    Api\NotificationManagementInterface,
+    Component\Config\ModuleConfigTrait,
+    Csi\Config\ModuleConfigInterface
+};
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\{
     Event\Observer,
@@ -27,6 +31,12 @@ use Magento\Framework\{
 
 class SessionNotifierPoolObserver implements ObserverInterface
 {
+    /**
+     * @property ModuleConfigInterface $moduleConfig
+     * @method bool isModuleEnabled()
+     */
+    use ModuleConfigTrait;
+
     /** @property NotificationManagementInterface $notifier */
     private $notifier;
 
@@ -34,14 +44,17 @@ class SessionNotifierPoolObserver implements ObserverInterface
     private $session;
 
     /**
+     * @param ModuleConfigInterface $moduleConfig
      * @param NotificationManagementInterface $notifier
      * @param Session $session
      * @return void
      */
     public function __construct(
+        ModuleConfigInterface $moduleConfig,
         NotificationManagementInterface $notifier,
         Session $session
     ) {
+        $this->moduleConfig = $moduleConfig;
         $this->notifier = $notifier;
         $this->session = $session;
     }
@@ -56,7 +69,7 @@ class SessionNotifierPoolObserver implements ObserverInterface
             return;
         }
 
-        if ($this->notifier->hasUnsent()) {
+        if ($this->isModuleEnabled()) {
             $this->notifier->processUnsent();
         }
     }

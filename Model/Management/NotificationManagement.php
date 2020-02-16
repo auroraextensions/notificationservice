@@ -24,9 +24,13 @@ use AuroraExtensions\NotificationService\{
     Api\Data\NotificationInterfaceFactory,
     Api\NotificationManagementInterface,
     Api\NotificationRepositoryInterface,
-    Model\Config\XmlReader
+    Component\Config\ModuleConfigTrait,
+    Csi\Config\ModuleConfigInterface,
+    Exception\ExceptionFactory,
+    Exception\ModuleNotEnabledException
 };
 use Magento\Framework\{
+    Config\ReaderInterface,
     Exception\CouldNotSaveException,
     Exception\LocalizedException,
     Exception\NoSuchEntityException,
@@ -37,67 +41,76 @@ use Psr\Log\LoggerInterface;
 
 class NotificationManagement implements NotificationManagementInterface
 {
-    /** @property NotificationInterfaceFactory $entryFactory */
-    protected $entryFactory;
+    /**
+     * @property ModuleConfigInterface $moduleConfig
+     * @method bool isModuleEnabled()
+     */
+    use ModuleConfigTrait;
 
-    /** @property NotificationRepositoryInterface $entryRepository */
-    protected $entryRepository;
-
-    /** @property XmlReader $xmlReader */
-    protected $xmlReader;
+    /** @property ExceptionFactory $exceptionFactory */
+    protected $exceptionFactory;
 
     /** @property LoggerInterface $logger */
     protected $logger;
 
+    /** @property NotificationInterfaceFactory $notificationFactory */
+    protected $notificationFactory;
+
+    /** @property NotificationRepositoryInterface $notificationRepository */
+    protected $notificationRepository;
+
     /** @property NotifierInterface $notifierPool */
     protected $notifierPool;
 
+    /** @property ReaderInterface $xmlReader */
+    protected $xmlReader;
+
     /**
-     * @param NotificationInterfaceFactory $entryFactory
-     * @param NotificationRepositoryInterface $entryRepository
-     * @param XmlReader $xmlReader
+     * @param ExceptionFactory $exceptionFactory
      * @param LoggerInterface $logger
+     * @param ModuleConfigInterface $moduleConfig
+     * @param NotificationInterfaceFactory $notificationFactory
+     * @param NotificationRepositoryInterface $notificationRepository
      * @param NotifierInterface $notifierPool
+     * @param ReaderInterface $xmlReader
      * @return void
      */
     public function __construct(
-        NotificationInterfaceFactory $entryFactory,
-        NotificationRepositoryInterface $entryRepository,
-        XmlReader $xmlReader,
+        ExceptionFactory $exceptionFactory,
         LoggerInterface $logger,
-        NotifierInterface $notifierPool
+        ModuleConfigInterface $moduleConfig,
+        NotificationInterfaceFactory $notificationFactory,
+        NotificationRepositoryInterface $notificationRepository,
+        NotifierInterface $notifierPool,
+        ReaderInterface $xmlReader
     ) {
-        $this->entryFactory = $entryFactory;
-        $this->entryRepository = $entryRepository;
-        $this->xmlReader = $xmlReader;
+        $this->exceptionFactory = $exceptionFactory;
         $this->logger = $logger;
+        $this->moduleConfig = $moduleConfig;
+        $this->notificationFactory = $notificationFactory;
+        $this->notificationRepository = $notificationRepository;
         $this->notifierPool = $notifierPool;
+        $this->xmlReader = $xmlReader;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasUnsent(): bool
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function markAsSent(NotificationInterface $entry): void
+    public function markIsSent(NotificationInterface $notification): NotificationInterface
     {
         try {
-            $this->entryRepository->save(
-                $entry->setIsSent(true)
+            $this->notificationRepository->save(
+                $notification->setIsSent(true)
             );
         } catch (CouldNotSaveException | LocalizedException $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $notification;
     }
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
     public function processUnsent(): void
     {
@@ -147,7 +160,7 @@ class NotificationManagement implements NotificationManagementInterface
         /** @var array $message */
         foreach ($messages as $message) {
             /** @var string $severity */
-            $severity = $message['severity'] ?? 'major';
+            $severity = $message['severity'] ?? 'notice';
 
             /** @var string $index */
             $index = $message['index'] ?? '0';
@@ -163,29 +176,39 @@ class NotificationManagement implements NotificationManagementInterface
             ]);
 
             try {
-                /** @var NotificationInterface $entry */
-                $entry = $this->entryRepository->get($xpath);
+                /** @var NotificationInterface $notification */
+                $notification = $this->notificationRepository->get($xpath);
 
-                if (!$isIgnored && !$entry->getIsSent()) {
-                    $this->send($message);
-                    $this->markAsSent($entry);
+                if (!$isIgnored && !$notification->getIsSent()) {
+                    $this->send($notification);
                 }
             } catch (NoSuchEntityException $e) {
-                /** @var NotificationInterface $entry */
-                $entry = $this->entryFactory->create();
+                /** @var string $title */
+                $title = $message['title'];
 
-                $entry->addData([
+                /** @var string $description */
+                $description = $message['description'] ?? '';
+
+                /** @var string $link */
+                $link = $message['link'] ?? '';
+
+                /** @var NotificationInterface $notification */
+                $notification = $this->notificationFactory->create();
+                $notification->addData([
                     'group' => $group,
                     'version' => $version,
                     'index' => $index,
                     'xpath' => $xpath,
+                    'severity' => $severity,
+                    'title' => $title,
+                    'description' => $description,
+                    'link' => $link,
                     'is_sent' => !$isIgnored
                 ]);
-                $this->entryRepository->save($entry);
+                $this->notificationRepository->save($notification);
 
                 if (!$isIgnored) {
-                    $this->send($message);
-                    $this->markAsSent($entry);
+                    $this->send($notification);
                 }
             } catch (LocalizedException | Exception $e) {
                 $this->logger->error($e->getMessage());
@@ -194,44 +217,66 @@ class NotificationManagement implements NotificationManagementInterface
     }
 
     /**
-     * @param array $message
-     * @return void
+     * {@inheritdoc}
      */
-    private function send(array $message = []): void
+    public function send(NotificationInterface $notification): NotificationInterface
     {
+        if (!$this->isModuleEnabled()) {
+            /** @var ModuleNotEnabledException $exception */
+            $exception = $this->exceptionFactory->create(
+                ModuleNotEnabledException::class
+            );
+
+            throw $exception;
+        }
+
+        /** @var string $group */
+        $group = $notification->getGroup();
+
+        /** @var string $version */
+        $version = $notification->getVersion();
+
+        /** @var int $index */
+        $index = $notification->getIndex() ?? 0;
+
+        /** @var string $xpath */
+        $xpath = implode('/', [
+            $group,
+            $version,
+            $index,
+        ]);
+
+        /** @var string $severity */
+        $severity = $notification->getSeverity();
+
+        /** @var string $title */
+        $title = $notification->getTitle();
+
+        /** @var string $description */
+        $description = $notification->getDescription() ?? '';
+
+        /** @var string $link */
+        $link = $notification->getLink() ?? '';
+
         try {
-            /** @var string $levelName */
-            $levelName = $message['severity'] ?? 'notice';
-
-            /** @var int $levelCode */
-            $levelCode = static::SEVERITY[$levelName];
-
-            /** @var string $title */
-            $title = $message['title'] ?? '';
-
-            /** @var string $description */
-            $description = $message['description'] ?? '';
-
-            /** @var array $details */
-            $details = $message['details'] ?? [];
-
-            if (!empty($details)) {
-                array_unshift($details, $description);
-            } else {
-                $details = $description;
-            }
-
-            /** @var string $link */
-            $link = $message['link'] ?? '';
-
             $this->notifierPool->add(
-                $levelCode,
+                static::SEVERITY[$severity],
                 $title,
-                $details,
+                $description,
                 $link
             );
+
+            $notification->addData([
+                'index' => $index,
+                'xpath' => $xpath,
+                'is_sent' => true,
+            ]);
+
+            $this->notificationRepository->save($notification);
         } catch (LocalizedException | Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $notification;
     }
 }

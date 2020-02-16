@@ -31,17 +31,15 @@ interface NotificationManagementInterface
     ];
 
     /**
-     * @return bool
+     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $notification
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
      */
-    public function hasUnsent(): bool;
+    public function markIsSent(Data\NotificationInterface $notification): Data\NotificationInterface;
 
     /**
-     * @return void
+     * @param \AuroraExtensions\NotificationService\Api\Data\NotificationInterface $notification
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
+     * @throws \AuroraExtensions\NotificationService\Exception\ModuleNotEnabledException
      */
-    public function markAsSent(Data\NotificationInterface $entry): void;
-
-    /**
-     * @return void
-     */
-    public function processUnsent(): void;
+    public function send(Data\NotificationInterface $notification): Data\NotificationInterface;
 }
