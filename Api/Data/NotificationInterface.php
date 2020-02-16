@@ -32,9 +32,9 @@ interface NotificationInterface
     public function setId($id);
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedAt();
+    public function getCreatedAt(): ?string;
 
     /**
      * @param \DateTime|string $createdAt
