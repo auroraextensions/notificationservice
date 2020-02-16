@@ -87,6 +87,50 @@ interface NotificationInterface
     public function setXpath(string $xpath): NotificationInterface;
 
     /**
+     * @return string
+     */
+    public function getSeverity(): string;
+
+    /**
+     * @param string $severity
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
+     */
+    public function setSeverity(string $severity): NotificationInterface;
+
+    /**
+     * @return string
+     */
+    public function getTitle(): string;
+
+    /**
+     * @param string $title
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
+     */
+    public function setTitle(string $title): NotificationInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string;
+
+    /**
+     * @param string $description
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
+     */
+    public function setDescription(string $description): NotificationInterface;
+
+    /**
+     * @return string|null
+     */
+    public function getLink(): ?string;
+
+    /**
+     * @param string $link
+     * @return \AuroraExtensions\NotificationService\Api\Data\NotificationInterface
+     */
+    public function setLink(string $link): NotificationInterface;
+
+    /**
      * @return bool
      */
     public function getIsSent(): bool;
